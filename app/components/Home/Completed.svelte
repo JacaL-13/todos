@@ -1,7 +1,7 @@
 <script>
 	import { Template } from 'svelte-native/components'
 
-	import { todos, dones } from '../../store/lists'
+	import { todos, dones } from '../../store/todos'
 
 	let textFieldValue = ''
 
