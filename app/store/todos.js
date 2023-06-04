@@ -4,8 +4,9 @@ import Chance from 'chance'
 
 const chance = new Chance()
 
+// clear() //Uncomment to clear data
 const storedData = getString('todos')
-const initialValue = JSON.parse(storedData)
+const initialValue = storedData ? JSON.parse(storedData) : []
 
 export const todos = writable(initialValue)
 

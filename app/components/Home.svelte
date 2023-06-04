@@ -1,6 +1,6 @@
 <script>
 	import ToDo from './Home/ToDo.svelte'
-	// import Completed from './Home/Completed.svelte'
+	import Completed from './Home/Completed.svelte'
 
 </script>
 
@@ -11,8 +11,8 @@
 		<tabViewItem title="To Do">
 			<ToDo />
 		</tabViewItem>
-		<!-- <tabViewItem title="Completed">
+		<tabViewItem title="Completed">
 			<Completed />
-		</tabViewItem> -->
+		</tabViewItem>
 	</tabView>
 </page>

@@ -1,48 +1,33 @@
 <script>
 	import { Template } from 'svelte-native/components'
+	import { onDestroy } from 'svelte'
 
-	import { todos, dones } from '../../store/todos'
+	import { todos } from '../../store/todos'
+	import { subscribe, addItem, updateItem, deleteItem } from '../../store/todos'
+	
+	let todosFiltered
+	const unsubcribe = todos.subscribe((value) => {
+		todosFiltered = value.filter((val) => val.complete === true)
+	})
 
-	let textFieldValue = ''
-
-	async function onItemTap(event) {
-		let result = await action('', '❌', ['Incomplete ⬜', 'Delete 🗑️🔥'])
-
-		let item = $dones[event.index]
-		switch (result) {
-			case 'Incomplete ⬜':
-				todos.set([item, ...$todos])
-				dones.set($dones.filter((i) => i !== item))
-				break
-			case 'Delete 🗑️🔥':
-				dones.set($dones.filter((i) => i !== item))
-				break
-			default:
-				break
-		}
+	function hdlUncheck(item) {
+		updateItem(item.itemId, 'complete', false)
+		console.log('$todos: ', $todos)
 	}
 
-	// async function onDoneTap(eve) {
-	// 	let result = await action('', '❌', ['Incomplete ⬜', 'Delete 🗑️'])
-
-	// 	console.log(result)
-	// 	let items = dones[eve.index]
-	// 	switch (result) {
-	// 		case 'Incomplete ⬜':
-	// 			todos = addToList(todos, item)
-	// 			dones = removeFromList(dones, item)
-	// 			break
-	// 		case 'Delete 🗑️':
-	// 			dones = removeFromList(dones, item)
-	// 			break
-	// 		default:
-	// 			break
-	// 	}
-	// }
+	onDestroy(() => {
+		unsubcribe()
+	})
 </script>
 
-<listView items={$dones} on:itemTap={onItemTap}>
+<listView items={todosFiltered}>
 	<Template let:item>
-		<label text={item.name} textWrap="true" />
+		<flexboxLayout justifyContent="space-between">
+			<label text={item.text} textWrap="true" />
+			<flexboxLayout>
+				<label on:tap={() => hdlUncheck(item)}>✅</label>
+				<label>🗑️</label>
+			</flexboxLayout>
+		</flexboxLayout>
 	</Template>
 </listView>
